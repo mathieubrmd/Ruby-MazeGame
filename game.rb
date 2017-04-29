@@ -24,7 +24,7 @@ class Game
 
     res = @scanner.readActionName()
 
-    # If the result is false, it means that the input wasn't right
+    # If the result is false, it means that the input wasn't correct
     while res == false
       puts('Make a new attack choice between rock, paper or scissors:')
       res = @scanner.readActionName()
