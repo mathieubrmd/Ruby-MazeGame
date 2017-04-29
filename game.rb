@@ -19,7 +19,7 @@ class Game
   # Return true if the player won and false if the ennemy won
   def handleEnnemy()
     puts('You got attacked by an ennemy !')
-    puts('In order to beat theam, you have to challenge them to play a Rock-Paper-Scissors.')
+    puts('In order to beat them, you have to challenge them to play a Rock-Paper-Scissors.')
     puts('Make your attack choice (rock, paper or scissors):')
 
     res = @scanner.readActionName()
