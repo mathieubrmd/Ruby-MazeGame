@@ -1,3 +1,9 @@
+=begin
+action.rb - Define the different types of actions - Paper/Rock/Scissors
+Mathieu Bourmaud - 19941124-P335
+Martin Porrès - 19940926-P170
+=end
+
 class MazeFactory
   def maze_game(length, height)
     return Maze.new(length, height)
