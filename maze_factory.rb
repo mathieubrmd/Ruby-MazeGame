@@ -4,7 +4,7 @@ Mathieu Bourmaud - 19941124-P335
 Martin Porrès - 19940926-P170
 =end
 
-require './game'
+require './rps-game'
 
 class MazeFactory
   def maze_game(length, height)
@@ -25,7 +25,14 @@ class MazeFactory
 end
 
 class Monster
-  @challenge = Game.new() #this is the RPS game
+  @challenge = RPS_game.new() #this is the RPS game
+
+  def play
+    @challenge.play
+  end
+end
+
+class Treasure
 end
 
 class Wall
@@ -35,22 +42,6 @@ class Door
   def initialize(room)
     # @room is the room that the door leads to
     @room = room
-    <<-DOC
-    case o1
-      when 'n'
-        @r1.set_elem('n', 'w')
-        @r2.set_elem('s', 'w')
-      when 's'
-        @r1.set_elem('s', 'w')
-        @r2.set_elem('n', 'w')
-      when 'e'
-        @r1.set_elem('e', 'w')
-        @r2.set_elem('w', 'w')
-      when 'w'
-        @r1.set_elem('w', 'w')
-        @r2.set_elem('e', 'w')
-      end
-    DOC
   end
 end
 
@@ -60,7 +51,7 @@ class Room
 
   # set the element (type = w or d) on the wall (o1 = n, s, e, w)
   def set_elem(type, o1='n')
-    @orientation[o1]= type
+    @orientation[o1] = type
   end
 
   # get the element (return = w or d) on the wall (o1 = n, s, e, w)
@@ -91,6 +82,14 @@ class Maze
   def get_room(x, y)
     return @map[x, y]
   end
+
+  def get_length
+    return @length
+  end
+
+  def get_height
+    return @height
+  end
 end
 
 def make_maze(x_size, y_size)
@@ -110,14 +109,23 @@ def make_maze(x_size, y_size)
         room.set_content(Monster.new)
       end
       #check if rooms already have a door
-      if !(room.get_elem(ori).is_a?(Door) && !rand_room.get_elem(op_ori).is_a?(Door)
+      if !room.get_elem(ori).is_a?(Door) && !rand_room.get_elem(op_ori).is_a?(Door)
         door = factory.make_door(rand_room)
         door2 = factory.make_door(room)
         room.set_elem(door, ori)
         rand_room.set_elem(door2, op_ori)
+        @m.set_room(room, x, y)
+        @m.set_room(rand_room, rand_x, rand_y)
       end
     end
   end
+  #set treasure room
+  rand_x = rand(x_size)
+  rand_y = rand( y_size)
+  room = @m.get_room(rand_x, rand_y)
+  room.set_content(Treasure.new())
+  @m.set_room(room, rand_x, rand_y)
+
 end
 
 def get_opposed_orientation(orientation)

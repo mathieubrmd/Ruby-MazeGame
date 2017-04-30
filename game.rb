@@ -4,64 +4,51 @@ Mathieu Bourmaud - 19941124-P335
 Martin Porrès - 19940926-P170
 =end
 
+require './maze_factory'
 require './scanner'
-require './actions'
 
 # The main class that runs the game
 class Game
-  def initialize()
-    @player = Player.new()
-    @ennemy = Player.new()
+  def initialize(maze)
+    @pos_x = 0
+    @pos_y = 0
+    @maze = maze
+    @finished = false
     @scanner = Scanner.new()
-    @actionFactory = ActionFactory.new()
   end
 
-  # Return true if the player won and false if the ennemy won
-  def handleEnnemy()
-    puts('You got attacked by an ennemy !')
-    puts('In order to beat them, you have to challenge them to play a Rock-Paper-Scissors.')
-    puts('Make your attack choice (rock, paper or scissors):')
+  def play
+    while !@finished
+      room = @maze.get_room(@pos_x, @pos_y)
+      describe_room(room)
 
-    res = @scanner.readActionName()
-
-    # If the result is false, it means that the input wasn't correct
-    while res == false
-      puts('Make a new attack choice between rock, paper or scissors:')
-      res = @scanner.readActionName()
     end
+    puts('Congratulations, you find the treasure room !')
+  end
 
-    # Creating the actions for the player and the ennemy
-    @player.currentAction = @actionFactory.createAction(res)
-    @ennemy.currentAction = @actionFactory.getRandomAction()
-
-    # The result of the attack
-    attack_result = @player.currentAction.attack(@ennemy.currentAction)
-
-    # While the attack is nil (a tie), we redo the attack with other actions
-    while attack_result == nil
-      puts('Make a new attack choice between rock, paper or scissors:')
-      res = @scanner.readActionName()
-      @player.currentAction = @actionFactory.createAction(res)
-      @ennemy.currentAction = @actionFactory.getRandomAction()
-      attack_result = @player.currentAction.attack(@ennemy.currentAction)
+  def describe_room(room)
+    puts('You enter a room.')
+    if room.get_content.is_a?(Treasure)
+      puts('Congratulations, you find the treasure room !')
+      @finished = true
     end
-
-    # We return the result of the attack when it's not a tie
-    return attack_result
+    #room
+    if room.get_content.is_a?(Monster)
+      puts('There is a horrible monster with large teeth in a corner.')
+      puts('What do you want to do (L, F):')
+      res = @scanner.readMonsterAction()
+      if res == 'F'
+        room.get_content.play
+      end
+    else
+      puts('There are no enemies.')
+      puts('What do you want to do (L):')
+      res = @scanner.readNoMonsterAction()
+    end
   end
-end
 
-# A simple player class, in the game it'll be either an ennemy or the player of the game
-# The currentAction attribute is the Action (Rock, Paper or Scissors) that the user chose
-# The currentAction is randomly attributed to an ennemy
-class Player
-  attr_accessor :currentAction
+  def handle_monster(room)
 
-  def initialize()
-    @currentAction = Action.new()
   end
-end
 
-# Just a test code to test if the RPS game is working correctly
-game = Game.new()
-game.handleEnnemy()
+end

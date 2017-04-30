@@ -21,4 +21,18 @@ class Scanner
 
     return action
   end
+
+  def readMonsterAction()
+    action = gets.chomp()
+    if action != "L" and action != "F"
+      puts("The action that you choose should be L or F.")
+    end
+  end
+
+  def reddNoMonsterAction()
+    action = gets.chomp()
+    if action != "L"
+      puts("The action that you choose should be L")
+    end
+  end
 end
