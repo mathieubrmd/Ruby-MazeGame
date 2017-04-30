@@ -43,18 +43,22 @@ class Door
     # @room is the room that the door leads to
     @room = room
   end
+
+  def get_new_room
+    return room
+  end
 end
 
 class Room
-  @orientation = {'n' => Wall.new, 's' => Wall.new, 'e' => Wall.new, 'w' => Wall.new}
+  @orientation = {'N' => Wall.new, 'S' => Wall.new, 'E' => Wall.new, 'W' => Wall.new}
   @content = nil
 
-  # set the element (type = w or d) on the wall (o1 = n, s, e, w)
+  # set the element (type = w or d) on the wall (o1 = N, S, E, W)
   def set_elem(type, o1='n')
     @orientation[o1] = type
   end
 
-  # get the element (return = w or d) on the wall (o1 = n, s, e, w)
+  # get the element (return = w or d) on the wall (o1 = N, S, E, W)
   def get_elem(o1)
     return @orientation[o1]
   end
@@ -102,7 +106,7 @@ def make_maze(x_size, y_size)
       rand_y = rand( y_size)
       room = @m.get_room(x, y)
       rand_room = @m.get_room(rand_x, rand_y)
-      ori = ['n', 's', 'e', 'w'].sample()
+      ori = ['N', 'S', 'E', 'W'].sample()
       op_ori = get_opposed_orientation(ori)
       #create an enemy (1 chance out of 10)
       if 0 == rand(10)
@@ -130,16 +134,16 @@ end
 
 def get_opposed_orientation(orientation)
   case orientation
-    when 'n'
-      return 's'
-    when 's'
-      return 'n'
-    when 'e'
-      return 'w'
-    when 'w'
-      return 'e'
+    when 'N'
+      return 'S'
+    when 'S'
+      return 'N'
+    when 'E'
+      return 'W'
+    when 'W'
+      return 'E'
   end
-  return 'n'
+  return 'N'
 end
 
 make_maze(20, 20)

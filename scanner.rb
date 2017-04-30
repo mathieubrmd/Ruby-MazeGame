@@ -26,13 +26,23 @@ class Scanner
     action = gets.chomp()
     if action != "L" and action != "F"
       puts("The action that you choose should be L or F.")
+      return nil
     end
   end
 
-  def reddNoMonsterAction()
+  def readNoMonsterAction()
     action = gets.chomp()
     if action != "L"
       puts("The action that you choose should be L")
+      return nil
+    end
+  end
+
+  def readLeavingOri()
+    action = gets.chomp()
+    if action != "N" and action != "S" and action !="E" and action != "W"
+      puts("The action that you choose should be N, S, E or W")
+      return nil
     end
   end
 end
