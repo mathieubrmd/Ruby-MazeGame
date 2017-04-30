@@ -43,43 +43,22 @@ class Door
     # @room is the room that the door leads to
     @room = room
   end
-end
 
-class Maze
-  def initialize(length, height)
-    @length, @height = length, height
-    @map = Array.new(length){Array.new(height, Room.new())}
-  end
-
-  def set_room(room, x, y)
-    @map[x][y] = room
-  end
-
-  def get_room(x, y)
-    return @map[x][y]
-  end
-
-  def get_length
-    return @length
-  end
-
-  def get_height
-    return @height
+  def get_new_room
+    return room
   end
 end
 
 class Room
-  def initialize()
-    @orientation = {"n" => Wall.new, "s" => Wall.new, "e" => Wall.new, "w" => Wall.new}
-    @content = nil
-  end
+  @orientation = {'N' => Wall.new, 'S' => Wall.new, 'E' => Wall.new, 'W' => Wall.new}
+  @content = nil
 
-  # set the element (type = w or d) on the wall (o1 = n, s, e, w)
+  # set the element (type = w or d) on the wall (o1 = N, S, E, W)
   def set_elem(type, o1='n')
     @orientation[o1] = type
   end
 
-  # get the element (return = w or d) on the wall (o1 = n, s, e, w)
+  # get the element (return = Wall or Door) on the wall (o1 = N, S, E, W)
   def get_elem(o1)
     return @orientation[o1]
   end
@@ -94,28 +73,45 @@ class Room
 
 end
 
+class Maze
+  def initialize(length, height)
+    @length, @height = length, height
+    @map = Array.new(length){Array.new(height, Room.new)}
+  end
+
+  def set_room(room, x, y)
+    @map[x, y] = room
+  end
+
+  def get_room(x, y)
+    return @map[x, y]
+  end
+
+  def get_length
+    return @length
+  end
+
+  def get_height
+    return @height
+  end
+end
+
 def make_maze(x_size, y_size)
   factory = MazeFactory.new()
   @m = factory.maze_game(x_size, y_size)
-  for x in 0..x_size-1
-    for y in 0..y_size-1
+  for x in 0..x_size
+    for y in 0..y_size
       #creating a door to a random room
       rand_x = rand(x_size)
       rand_y = rand( y_size)
-
-
       room = @m.get_room(x, y)
-
-      rand_room = @m.get_room(0, 0)
-      ori = ['n', 's', 'e', 'w'].sample()
+      rand_room = @m.get_room(rand_x, rand_y)
+      ori = ['N', 'S', 'E', 'W'].sample()
       op_ori = get_opposed_orientation(ori)
       #create an enemy (1 chance out of 10)
       if 0 == rand(10)
         room.set_content(Monster.new)
       end
-
-      puts(room.get_elem('s'))
-
       #check if rooms already have a door
       if !room.get_elem(ori).is_a?(Door) && !rand_room.get_elem(op_ori).is_a?(Door)
         door = factory.make_door(rand_room)
@@ -138,19 +134,19 @@ end
 
 def get_opposed_orientation(orientation)
   case orientation
-    when 'n'
-      return 's'
-    when 's'
-      return 'n'
-    when 'e'
-      return 'w'
-    when 'w'
-      return 'e'
+    when 'N'
+      return 'S'
+    when 'S'
+      return 'N'
+    when 'E'
+      return 'W'
+    when 'W'
+      return 'E'
   end
-  return 'n'
+  return 'N'
 end
 
-make_maze(2, 2)
+make_maze(20, 20)
 
 #définir la tresor room
 # spawn le joueur en [0,0]
