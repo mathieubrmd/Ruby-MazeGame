@@ -78,7 +78,12 @@ end
 class Maze
   def initialize(length, height)
     @length, @height = length, height
-    @map = Array.new(length){Array.new(height, Room.new)}
+    @map = Array.new(length) { Array.new(height) }
+    for x in 0..length-1
+      for y in 0..height-1
+       @map[x][y] = Room.new
+      end
+    end
   end
 
   def set_room(room, x, y)
@@ -107,10 +112,6 @@ def make_maze(x_size, y_size)
       rand_x = rand(x_size)
       rand_y = rand( y_size)
       room = @m.get_room(x, y)
-      #DEBUG
-      puts("BEFORE SET")
-      debug(room, x, y)
-      #DEBUG
       rand_room = @m.get_room(rand_x, rand_y)
       ori = ['N', 'S', 'E', 'W'].sample()
       op_ori = get_opposed_orientation(ori)
@@ -126,13 +127,6 @@ def make_maze(x_size, y_size)
         rand_room.set_elem(door2, op_ori)
         @m.set_room(room, x, y)
         @m.set_room(rand_room, rand_x, rand_y)
-
-        #DEBUG
-        puts("AFTER SET")
-        room = @m.get_room(x, y)
-        debug(room, x, y)
-        #DEBUG
-
       end
     end
   end
@@ -142,7 +136,6 @@ def make_maze(x_size, y_size)
   room = @m.get_room(rand_x, rand_y)
   room.set_content(Treasure.new())
   @m.set_room(room, rand_x, rand_y)
-
   return @m
 end
 
@@ -158,25 +151,4 @@ def get_opposed_orientation(orientation)
       return 'E'
   end
   return 'N'
-end
-
-def debug(room, x, y)
-  str = 'VIRGIN X: '
-  str += x.to_s
-  str += ' Y: '
-  str += y.to_s
-  str += ' DOOR:'
-  if room.get_elem('N').is_a?(Door)
-    str += ' N'
-  end
-  if room.get_elem('S').is_a?(Door)
-    str +=' S'
-  end
-  if room.get_elem('E').is_a?(Door)
-    str += ' E'
-  end
-  if room.get_elem('W').is_a?(Door)
-    str += ' W'
-  end
-  puts(str)
 end

@@ -51,23 +51,15 @@ class Game
     str = 'There are doors to the'
     if room.get_elem('N').is_a?(Door)
       str += ' north,'
-    else
-      puts('No N')
     end
     if room.get_elem('S').is_a?(Door)
       str +=' south,'
-    else
-      puts('No S')
     end
     if room.get_elem('E').is_a?(Door)
       str += ' east,'
-    else
-      puts('No E')
     end
     if room.get_elem('W').is_a?(Door)
       str += ' west,'
-    else
-      puts('No W')
     end
     str = str[0...-1]
     str += '.'
