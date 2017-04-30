@@ -50,8 +50,10 @@ class Door
 end
 
 class Room
-  @orientation = {'N' => Wall.new, 'S' => Wall.new, 'E' => Wall.new, 'W' => Wall.new}
-  @content = nil
+  def initialize()
+    @orientation = {'N' => Wall.new, 'S' => Wall.new, 'E' => Wall.new, 'W' => Wall.new}
+    @content = nil
+  end
 
   # set the element (type = w or d) on the wall (o1 = N, S, E, W)
   def set_elem(type, o1='n')
@@ -80,11 +82,11 @@ class Maze
   end
 
   def set_room(room, x, y)
-    @map[x, y] = room
+    @map[x][y] = room
   end
 
   def get_room(x, y)
-    return @map[x, y]
+    return @map[x][y]
   end
 
   def get_length
@@ -99,8 +101,8 @@ end
 def make_maze(x_size, y_size)
   factory = MazeFactory.new()
   @m = factory.maze_game(x_size, y_size)
-  for x in 0..x_size
-    for y in 0..y_size
+  for x in 0..x_size-1
+    for y in 0..y_size-1
       #creating a door to a random room
       rand_x = rand(x_size)
       rand_y = rand( y_size)
@@ -145,16 +147,3 @@ def get_opposed_orientation(orientation)
   end
   return 'N'
 end
-
-make_maze(20, 20)
-
-#définir la tresor room
-# spawn le joueur en [0,0]
-#créer boucle de jeu
-  # lire la salle:
-  # si salle du trésor, win
-  # si monstre -> demander combat (L, F)
-  # sinon décrire la salle (portes)
-  # demander quelle porte prendre (N, S, E, W)
-#fin boucle
-

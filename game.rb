@@ -7,6 +7,7 @@ Martin Porrès - 19940926-P170
 require './maze_factory'
 require './scanner'
 
+
 # The main class that runs the game
 class Game
   def initialize(maze)
@@ -85,3 +86,6 @@ class Game
     end
   end
 end
+
+game = Game.new(make_maze(20, 20))
+game.play()
