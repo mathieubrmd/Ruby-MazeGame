@@ -22,16 +22,17 @@ class Game
     room = @maze.get_room(@pos_x, @pos_y)
     while @run
       describe_room(room)
-      puts('You wan to leave. Trough which door (N, S, E, W):')
-      res = nil
-      while res == nil
-        res = @scanner.readLeavingOri()
-        if room.get_elem(res).is_a?(Door)
-          room = room.get_elem(res).get_new_room()
+      if @run
+        puts('You wan to leave. Trough which door (N, S, E, W):')
+        res = nil
+        while res == nil
+          res = @scanner.readLeavingOri()
+          if room.get_elem(res).is_a?(Door)
+            room = room.get_elem(res).get_new_room()
+          end
         end
       end
     end
-    puts('Congratulations, you find the treasure room !')
   end
 
   def describe_room(room)
@@ -48,19 +49,27 @@ class Game
 
   def check_doors(room)
     str = 'There are doors to the'
-    if !room.get_elem('N').is_a?(Door)
+    if room.get_elem('N').is_a?(Door)
       str += ' north,'
+    else
+      puts('No N')
     end
-    if !room.get_elem('S').is_a?(Door)
+    if room.get_elem('S').is_a?(Door)
       str +=' south,'
+    else
+      puts('No S')
     end
-    if !room.get_elem('E').is_a?(Door)
+    if room.get_elem('E').is_a?(Door)
       str += ' east,'
+    else
+      puts('No E')
     end
-    if !room.get_elem('W').is_a?(Door)
+    if room.get_elem('W').is_a?(Door)
       str += ' west,'
+    else
+      puts('No W')
     end
-    str = [0...-1]
+    str = str[0...-1]
     str += '.'
     puts(str)
   end

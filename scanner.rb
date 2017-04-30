@@ -28,6 +28,7 @@ class Scanner
       puts("The action that you choose should be L or F.")
       return nil
     end
+    return action
   end
 
   def readNoMonsterAction()
@@ -36,6 +37,7 @@ class Scanner
       puts("The action that you choose should be L")
       return nil
     end
+    return action
   end
 
   def readLeavingOri()
@@ -44,5 +46,6 @@ class Scanner
       puts("The action that you choose should be N, S, E or W")
       return nil
     end
+    return action
   end
 end
