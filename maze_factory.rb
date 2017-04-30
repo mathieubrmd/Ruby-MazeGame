@@ -58,7 +58,7 @@ class Room
     @orientation[o1] = type
   end
 
-  # get the element (return = w or d) on the wall (o1 = N, S, E, W)
+  # get the element (return = Wall or Door) on the wall (o1 = N, S, E, W)
   def get_elem(o1)
     return @orientation[o1]
   end
