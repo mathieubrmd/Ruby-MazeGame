@@ -69,8 +69,8 @@ class Room
     @content = type
   end
 
-  def get_content(type)
-    return type
+  def get_content()
+    return @content
   end
 
 end
@@ -132,6 +132,7 @@ def make_maze(x_size, y_size)
   room.set_content(Treasure.new())
   @m.set_room(room, rand_x, rand_y)
 
+  return @m
 end
 
 def get_opposed_orientation(orientation)
